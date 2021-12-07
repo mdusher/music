@@ -6,11 +6,6 @@
 	<description><![CDATA[A stand-alone music player app and a "lite" player for the Files app
 
 - On modern browsers, supports at least audio types mp3, ogg, m4a, m4b, flac, wav
-- Playlist support with import from m3u, m3u8, and pls files
-- Browse by artists, albums, genres, or folders
-- Filter the shown content with the search function
-- Play internet radio and podcast channels
-- Setup Last.fm connection to see background information on artists, albums, and songs
 - Control with media control keys on the keyboard or OS (supported on all modern desktop browsers)
 - The app can handle libraries consisting of thousands of albums and tens of thousands of songs
 - Includes a server backend compatible with the Subsonic and Ampache protocols, allowing playback and browsing of your library on various external apps e.g. on Android or iPhone]]></description>
@@ -33,18 +28,4 @@
 		<owncloud min-version="10" max-version="10" />
 		<nextcloud min-version="13" max-version="23" />
 	</dependencies>
-	<types>
-		<!-- update metadata cache when create/update/delete a file -->
-		<filesystem/>
-	</types>
-	<repair-steps>
-		<pre-migration>
-			<step>OCA\Music\Migration\PreMigration</step>
-		</pre-migration>
-		<post-migration>
-			<step>OCA\Music\Migration\BogusTrackRemoval</step>
-			<step>OCA\Music\Migration\DiskNumberMigration</step>
-			<step>OCA\Music\Migration\TimestampInit</step>
-		</post-migration>
-	</repair-steps>
 </info>
