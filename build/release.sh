@@ -25,17 +25,7 @@ zip -d music/music.zip "music/img/*.svg"
 zip -d music/music.zip "music/img/*/*"
 zip -d music/music.zip "music/js/*.js*"
 zip -d music/music.zip "music/js/*/*"
-zip -d music/music.zip "music/l10n/*/*"
 
 # Remove also files related to testing and code analysis
-zip -d music/music.zip "music/tests/*"
 zip -d music/music.zip "music/composer.*"
 zip -d music/music.zip "music/phpstan.neon"
-zip -d music/music.zip "music/stubs/*"
-
-# Fork the package to own versions for Nextcloud and ownCloud.
-# Different mechanism is used on each cloud to define the database schema.
-cp music/music.zip music/music-nc.zip
-mv music/music.zip music/music-oc.zip
-zip -d music/music-nc.zip "music/appinfo/database.xml"
-zip -d music/music-oc.zip "music/lib/Migration/Version*Date*.php"
