@@ -19,7 +19,7 @@ function EmbeddedPlayer(readyCallback, onClose, onNext, onPrev) {
 	var coverImage = null;
 	var titleText = null;
 	var artistText = null;
-	
+
 	function togglePlayback() {
 		// discard command while switching to new track is ongoing
 		if (!playDelayTimer) {
@@ -284,25 +284,8 @@ function EmbeddedPlayer(readyCallback, onClose, onNext, onPrev) {
 	}
 
 	function loadFileInfoFromUrl(url, fallbackTitle, fileId, callback /*optional*/) {
-		$.get(url, function(data) {
-			// discard results if the file has already changed by the time the
-			// result arrives
-			if (currentFileId == fileId) {
-				titleText.text(data.title);
-				artistText.text(data.artist);
-
-				if (data.cover) {
-					coverImage.css('background-image', 'url("' + data.cover + '")');
-				}
-
-				if (callback) {
-					callback(data);
-				}
-			}
-		}).fail(function() {
-			titleText.text(fallbackTitle);
-			artistText.text('');
-		});
+		titleText.text(fallbackTitle);
+		artistText.text('');
 	}
 
 	function titleFromFilename(filename) {
@@ -424,7 +407,7 @@ function Playlist() {
 		});
 		mCurrentIndex = _.findIndex(mFiles, function(file) {
 			// types int/string depend on the cloud version, don't use ===
-			return file.id == firstFileId; 
+			return file.id == firstFileId;
 		});
 	};
 

@@ -14,23 +14,7 @@
 
 namespace OCA\Music\App;
 
-$app = new Music();
-
-$c = $app->getContainer();
-$appName = $c->query('AppName');
-
-/**
- * add navigation
- */
-\OC::$server->getNavigationManager()->add(function () use ($c, $appName) {
-	return [
-		'id' => $appName,
-		'order' => 10,
-		'name' => $c->query('L10N')->t('Music'),
-		'href' => $c->query('URLGenerator')->linkToRoute('music.page.index'),
-		'icon' => $c->query('URLGenerator')->imagePath($appName, 'music.svg')
-	];
-});
+$appName = 'music';
 
 /**
  * Set default content security policy to allow loading media from data URL.
@@ -41,23 +25,6 @@ if (\method_exists(\OC::$server, 'getContentSecurityPolicyManager')) {
 	$policy->addAllowedMediaDomain('data:');
 	\OC::$server->getContentSecurityPolicyManager()->addDefaultPolicy($policy);
 }
-
-/**
- * register regular task
- */
-\OC::$server->getJobList()->add('OC\BackgroundJob\Legacy\RegularJob', ['OCA\Music\Backgroundjob\CleanUp', 'run']);
-
-/**
- * register hooks
- */
-$c->query('FileHooks')->register();
-$c->query('ShareHooks')->register();
-$c->query('UserHooks')->register();
-
-/**
- * register search provider
- */
-\OC::$server->getSearch()->registerProvider('OCA\Music\Utility\Search');
 
 /**
  * Load embedded music player for Files and Sharing apps
@@ -79,7 +46,6 @@ $loadEmbeddedMusicPlayer = function () use ($appName) {
 	\OCP\Util::addScript($appName, 'vendor/jquery-initialize/jquery.initialize.min');
 	\OCP\Util::addScript($appName, 'vendor/js-cookie/src/js.cookie');
 	\OCP\Util::addScript($appName, 'public/files-music-player');
-
 	\OCP\Util::addStyle($appName, 'public/files-music-player');
 };
 

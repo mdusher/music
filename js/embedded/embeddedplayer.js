@@ -29,7 +29,7 @@ function EmbeddedPlayer(readyCallback, onClose, onNext, onPrev) {
 	var coverImage = null;
 	var titleText = null;
 	var artistText = null;
-	
+
 	function togglePlayback() {
 		// discard command while switching to new track is ongoing
 		if (!playDelayTimer) {
@@ -293,28 +293,6 @@ function EmbeddedPlayer(readyCallback, onClose, onNext, onPrev) {
 		return $('#song-info *, #albumart');
 	}
 
-	function loadFileInfoFromUrl(url, fallbackTitle, fileId, callback /*optional*/) {
-		$.get(url, function(data) {
-			// discard results if the file has already changed by the time the
-			// result arrives
-			if (currentFileId == fileId) {
-				titleText.text(data.title);
-				artistText.text(data.artist);
-
-				if (data.cover) {
-					coverImage.css('background-image', 'url("' + data.cover + '")');
-				}
-
-				if (callback) {
-					callback(data);
-				}
-			}
-		}).fail(function() {
-			titleText.text(fallbackTitle);
-			artistText.text('');
-		});
-	}
-
 	function titleFromFilename(filename) {
 		// parsing logic is ported form parseFileName in utility/scanner.php
 		var match = filename.match(/^((\d+)\s*[.-]\s+)?(.+)\.(\w{1,4})$/);
@@ -346,27 +324,13 @@ function EmbeddedPlayer(readyCallback, onClose, onNext, onPrev) {
 	}
 
 	function loadFileInfo(fileId, fallbackTitle) {
-		var url  = OC.generateUrl('apps/music/api/file/{fileId}/info', {'fileId':fileId});
-		loadFileInfoFromUrl(url, fallbackTitle, fileId, function(data) {
-			if (data.in_library) {
-				var navigateToMusicApp = function() {
-					window.location = OC.generateUrl('apps/music/#/file/{fileId}', {'fileId':fileId});
-				};
-				musicAppLinkElements()
-					.css('cursor', 'pointer')
-					.click(navigateToMusicApp)
-					.attr('title', t('music', 'Go to album'));
-			}
-			else {
-				musicAppLinkElements().attr('title', t('music', '(file is not within your music collection folder)'));
-			}
-		});
+		titleText.text(fallbackTitle);
+		artistText.text('');
 	}
 
 	function loadSharedFileInfo(shareToken, fileId, fallbackTitle) {
-		var url  = OC.generateUrl('apps/music/api/share/{token}/{fileId}/info',
-				{'token':shareToken, 'fileId':fileId});
-		loadFileInfoFromUrl(url, fallbackTitle, fileId);
+		titleText.text(fallbackTitle);
+		artistText.text('');
 	}
 
 
