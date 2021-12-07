@@ -167,8 +167,7 @@ function initEmbeddedPlayer() {
 					urlForFile(file),
 					file.mimetype,
 					file.id,
-					file.name,
-					mShareToken
+					file.name
 				);
 			}
 			mPlayer.setPlaylistIndex(mPlaylist.currentIndex(), mPlaylist.length());
@@ -287,8 +286,7 @@ function initEmbeddedPlayer() {
 						$('#downloadURL').val(),
 						$('#mimetype').val(),
 						0,
-						$('#filename').val(),
-						mShareToken
+						$('#filename').val()
 				);
 			}
 			else {

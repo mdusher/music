@@ -30,7 +30,7 @@ OCA.Music.EmbeddedPlayer = function(onClose, onNext, onPrev, onMenuOpen, onShowL
 	var currentFileId = null;
 	var playTime_s = 0;
 
-	// UI elements (jQuery)
+	// UI elements (jQuery)up
 	var musicControls = null;
 	var playButton = null;
 	var pauseButton = null;
@@ -420,26 +420,6 @@ OCA.Music.EmbeddedPlayer = function(onClose, onNext, onPrev, onMenuOpen, onShowL
 		updateMediaSession(data);
 	}
 
-	function loadFileInfoFromUrl(url, fallbackTitle, fileId, callback /*optional*/) {
-		$.get(url, function(data) {
-			// discard results if the file has already changed by the time the
-			// result arrives
-			if (currentFileId == fileId) {
-				updateMetadata(data);
-
-				if (callback) {
-					callback(data, fileId);
-				}
-			}
-		}).fail(function() {
-			updateMetadata({
-				title: fallbackTitle,
-				artist: '',
-				cover: null
-			});
-		});
-	}
-
 	function playUrl(url, mime, tempTitle, nextStep /*optional*/) {
 		pause();
 
@@ -465,33 +445,6 @@ OCA.Music.EmbeddedPlayer = function(onClose, onNext, onPrev, onMenuOpen, onShowL
 				nextStep();
 			}
 		}, 300);
-	}
-
-	function loadFileInfo(fileId, fallbackTitle) {
-		var url  = OC.generateUrl('apps/music/api/file/{fileId}/info', {'fileId':fileId});
-		loadFileInfoFromUrl(url, fallbackTitle, fileId, updateMusicAppLink);
-	}
-
-	function updateMusicAppLink(data, fileId) {
-		if (data.in_library) {
-			var navigateToMusicApp = function() {
-				window.location = OC.generateUrl('apps/music/#/file/{fileId}?offset={offset}',
-						{'fileId':fileId, 'offset': player.playPosition()});
-			};
-			musicAppLinkElements()
-				.css('cursor', 'pointer')
-				.click(navigateToMusicApp)
-				.attr('title', t('music', 'Continue playing in Music'));
-		}
-		else {
-			musicAppLinkElements().attr('title', t('music', '(file is not within your music collection folder)'));
-		}
-	}
-
-	function loadSharedFileInfo(shareToken, fileId, fallbackTitle) {
-		var url  = OC.generateUrl('apps/music/api/share/{token}/{fileId}/info',
-				{'token':shareToken, 'fileId':fileId});
-		loadFileInfoFromUrl(url, fallbackTitle, fileId);
 	}
 
 	function updateNextButtonStatus() {
@@ -562,15 +515,15 @@ OCA.Music.EmbeddedPlayer = function(onClose, onNext, onPrev, onMenuOpen, onShowL
 		musicControls.css('display', 'inline-block');
 	};
 
-	this.playFile = function(url, mime, fileId, fileName, /*optional*/ shareToken) {
+	this.playFile = function(url, mime, fileId, fileName) {
 		currentFileId = fileId;
 		var fallbackTitle = OCA.Music.Utils.titleFromFilename(fileName);
 		playUrl(url, mime, fallbackTitle, function() {
-			if (shareToken) {
-				loadSharedFileInfo(shareToken, fileId, fallbackTitle);
-			} else {
-				loadFileInfo(fileId, fallbackTitle);
-			}
+			updateMetadata({
+				title: fallbackTitle,
+				artist: '',
+				cover: null
+			});
 		});
 	};
 
