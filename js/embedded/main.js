@@ -183,8 +183,6 @@ function initEmbeddedPlayer() {
 		// Add play action to file rows with supported mime type, either audio or playlist.
 		// Protect against cases where this script gets (accidentally) loaded outside of the Files app.
 		if (typeof OCA.Files !== 'undefined') {
-			//OCA.Music.initPlaylistTabView(mPlaylistMimes);
-			connectPlaylistTabViewEvents();
 			registerFolderPlayer(mAudioMimes, openAudioFile);
 			registerFolderPlayer(mPlaylistMimes, openPlaylistFile);
 		}
@@ -192,32 +190,6 @@ function initEmbeddedPlayer() {
 		// Add player on single-file-share page if the MIME is a supported audio type
 		if ($('#header').hasClass('share-file')) {
 			registerFileSharePlayer(mAudioMimes);
-		}
-	}
-
-	function connectPlaylistTabViewEvents() {
-		if (OCA.Music.playlistTabView) {
-			OCA.Music.playlistTabView.on('playlistItemClick', function(playlistId, playlistName, itemIdx) {
-				if (mCurrentFile !== null && playlistId == mCurrentFile.id) {
-					if (itemIdx == mPlaylist.currentIndex()) {
-						mPlayer.togglePlayback();
-					} else {
-						jumpToPlaylistFile(mPlaylist.jumpToIndex(itemIdx));
-					}
-				}
-				else {
-					mFileList = OCA.Files.App.fileList;
-					mCurrentFile = mFileList.findFile(playlistName);
-					openPlaylistFile(function() {
-						jumpToPlaylistFile(mPlaylist.jumpToIndex(itemIdx));
-					});
-				}
-			});
-			OCA.Music.playlistTabView.on('rendered', function() {
-				if (mCurrentFile !== null) {
-					OCA.Music.playlistTabView.setCurrentTrack(mCurrentFile.id, mPlaylist.currentIndex());
-				}
-			});
 		}
 	}
 
