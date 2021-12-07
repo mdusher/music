@@ -20,7 +20,6 @@ module.exports = {
   mode: 'production',
   devtool: 'source-map',
   entry: {
-    app: '../js/index.app.js',
     files_music_player: '../js/index.embedded.js'
   },
   output: {
