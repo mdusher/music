@@ -140,7 +140,7 @@ function initEmbeddedPlayer() {
 
 	function doImportFromFile(serviceImportFunc) {
 		// The busy animation is shown on the file item if we are still viewing the folder
-		// where the file resides. The importing itself is possible regardless. 
+		// where the file resides. The importing itself is possible regardless.
 		if (viewingCurrentFileFolder()) {
 			var $file = mFileList.findFileEl(mCurrentFile.name);
 			mFileList.showFileBusyState($file, true);
@@ -183,7 +183,7 @@ function initEmbeddedPlayer() {
 		// Add play action to file rows with supported mime type, either audio or playlist.
 		// Protect against cases where this script gets (accidentally) loaded outside of the Files app.
 		if (typeof OCA.Files !== 'undefined') {
-			OCA.Music.initPlaylistTabView(mPlaylistMimes);
+			//OCA.Music.initPlaylistTabView(mPlaylistMimes);
 			connectPlaylistTabViewEvents();
 			registerFolderPlayer(mAudioMimes, openAudioFile);
 			registerFolderPlayer(mPlaylistMimes, openPlaylistFile);
